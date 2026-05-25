@@ -41,6 +41,7 @@ def template_ctx(request: Request, **extra):
 
 @app.on_event("startup")
 def on_startup() -> None:
+    settings.upload_dir.mkdir(parents=True, exist_ok=True)
     init_db()
     from app.database import SessionLocal
 
