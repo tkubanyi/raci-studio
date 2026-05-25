@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}RACI Studio{% endblock %} | {{ client }}</title>
+  <link rel="stylesheet" href="/static/css/main.css">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>RACI Studio</h1>
+      <div class="meta">{{ client }} — {{ engagement }}</div>
+    </div>
+    <span class="badge-pwc">Delivered by {{ deliverer }}</span>
+  </header>
+  <div class="layout">
+    <nav class="nav">
+      <a href="/" class="{% if request.url.path == '/' %}active{% endif %}">Dashboard</a>
+      <a href="/processes" class="{% if '/processes' in request.url.path %}active{% endif %}">Processes</a>
+      <a href="/roles" class="{% if request.url.path == '/roles' %}active{% endif %}">Roles</a>
+      <a href="/defects" class="{% if request.url.path == '/defects' %}active{% endif %}">Defects</a>
+      <a href="/documents" class="{% if '/documents' in request.url.path %}active{% endif %}">Documents</a>
+    </nav>
+    <main class="main">
+      {% block content %}{% endblock %}
+      <p class="footer-note">Prototype for {{ client }} Prague SSC Transformation. Rule-based defect engine (D-001–D-012). Not for production use without security review.</p>
+    </main>
+  </div>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

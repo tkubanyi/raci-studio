@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Diagram — {{ process.name }}{% endblock %}
+{% block head %}
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+{% endblock %}
+{% block content %}
+<h2>Process diagram: {{ process.name }}</h2>
+<p>Swimlane-style flow (Mermaid). Linked to structured activity model.</p>
+<div class="mermaid-wrap">
+  <pre class="mermaid">{{ mermaid }}</pre>
+</div>
+<p>
+  <a class="btn" href="/raci/{{ process.id }}">RACI matrix</a>
+  <a href="/processes/{{ process.id }}">← Activities</a>
+</p>
+{% endblock %}

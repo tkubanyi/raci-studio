@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Processes{% endblock %}
+{% block content %}
+<h2>Process registry</h2>
+
+<form class="inline" method="post" action="/processes">
+  <label>Name <input name="name" required placeholder="Process name"></label>
+  <label>Domain <input name="domain" value="Finance"></label>
+  <label>Description <input name="description"></label>
+  <button class="btn" type="submit">Add process</button>
+</form>
+
+<table>
+  <thead><tr><th>Process</th><th>Domain</th><th>Status</th><th>Version</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for p in processes %}
+    <tr>
+      <td><strong>{{ p.name }}</strong></td>
+      <td>{{ p.domain }}</td>
+      <td>{{ p.status }}</td>
+      <td>{{ p.version }}</td>
+      <td>
+        <a href="/processes/{{ p.id }}">Activities</a> |
+        <a href="/raci/{{ p.id }}">RACI</a> |
+        <a href="/processes/{{ p.id }}/diagram">Diagram</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ process.name }}{% endblock %}
+{% block content %}
+<h2>{{ process.name }}</h2>
+<p>{{ process.description or '' }} <em>({{ process.status }} v{{ process.version }})</em></p>
+<p>
+  <a class="btn" href="/raci/{{ process.id }}">Open RACI matrix</a>
+  <a class="btn btn-secondary" href="/processes/{{ process.id }}/diagram">Process diagram</a>
+  <a href="/processes">← Back</a>
+</p>
+
+<h3>Activities</h3>
+<form class="inline" method="post" action="/processes/{{ process.id }}/activities">
+  <label>Name <input name="name" required></label>
+  <label>Sequence <input name="sequence" type="number" value="0"></label>
+  <label>Start event <select name="is_start"><option value="false">No</option><option value="true">Yes</option></select></label>
+  <label>SLA <input name="sla"></label>
+  <label>Frequency <input name="frequency"></label>
+  <button class="btn" type="submit">Add activity</button>
+</form>
+
+<table>
+  <thead><tr><th>#</th><th>Activity</th><th>SLA</th><th>Frequency</th><th>Start</th></tr></thead>
+  <tbody>
+    {% for a in process.activities|sort(attribute='sequence') %}
+    <tr>
+      <td>{{ a.sequence }}</td>
+      <td>{{ a.name }}</td>
+      <td>{{ a.sla or '—' }}</td>
+      <td>{{ a.frequency or '—' }}</td>
+      <td>{% if a.is_start %}Yes{% else %}—{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

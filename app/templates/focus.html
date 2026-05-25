@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Focus Areas{% endblock %}
+{% block content %}
+<div class="grid">
+  <div class="card stat"><div class="num">{{ focus.total_defects }}</div><div class="label">Total defects</div></div>
+  <div class="card stat"><div class="num">{{ focus.no_accountable }}</div><div class="label">No Accountable (D-001)</div></div>
+</div>
+
+<div class="card">
+  <h2>Top processes by defect density</h2>
+  <table>
+    <thead><tr><th>Process</th><th>Defects</th><th>Critical</th></tr></thead>
+    <tbody>
+      {% for item in focus.top_processes %}
+      <tr><td>{{ item.process }}</td><td>{{ item.count }}</td><td>{{ item.critical }}</td></tr>
+      {% else %}
+      <tr><td colspan="3">No data</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h2>Top overloaded / flagged roles</h2>
+  <table>
+    <thead><tr><th>Role</th><th>Defects</th></tr></thead>
+    <tbody>
+      {% for item in focus.top_roles %}
+      <tr><td>{{ item.role }}</td><td>{{ item.count }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h2>All defects (workspace)</h2>
+  <ul style="max-height:400px;overflow-y:auto">
+    {% for d in focus.defects %}
+    <li><span class="tag tag-{{ d.severity|lower }}">{{ d.rule_id }}</span> {{ d.message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

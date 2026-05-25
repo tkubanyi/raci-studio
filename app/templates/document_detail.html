@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ document.filename if document else 'Document' }}{% endblock %}
+{% block content %}
+{% if document %}
+<h2>{{ document.filename }}</h2>
+<p>Status: {{ document.status }} · Extraction: <code>{{ extraction }}</code></p>
+<div class="panel">
+  <h3>Extracted text (preview)</h3>
+  <pre style="white-space: pre-wrap; font-size: 0.8rem; max-height: 400px; overflow: auto;">{{ preview }}</pre>
+</div>
+<a href="/documents">← Documents</a>
+{% else %}
+<p>Document not found.</p>
+{% endif %}
+{% endblock %}

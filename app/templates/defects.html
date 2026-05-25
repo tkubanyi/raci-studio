@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Defects{% endblock %}
+{% block content %}
+<h2>Defect & gap detection (D-001 – D-012)</h2>
+
+<form class="inline" method="get" action="/defects">
+  <label>Dimension
+    <select name="dimension">
+      <option value="">All</option>
+      {% for d in dimensions %}
+      <option value="{{ d.slug }}" {% if filter_dimension == d.slug %}selected{% endif %}>{{ d.name }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Severity
+    <select name="severity">
+      <option value="">All</option>
+      {% for s in ['Critical','High','Medium','Low'] %}
+      <option value="{{ s }}" {% if filter_severity == s %}selected{% endif %}>{{ s }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <button class="btn" type="submit">Filter</button>
+</form>
+
+<ul class="defect-list">
+  {% for d in defects %}
+  <li>
+    <span class="sev-{{ d.severity.value }}">[{{ d.rule_id }} · {{ d.severity.value }}]</span>
+    {{ d.message }}
+    {% if d.dimension_slug %}<em>({{ dimension_labels.get(d.dimension_slug, d.dimension_slug) }})</em>{% endif %}
+  </li>
+  {% else %}
+  <li>No defects match filters.</li>
+  {% endfor %}
+</ul>
+<p>{{ defects|length }} defect(s) shown.</p>
+{% endblock %}

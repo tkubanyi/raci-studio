@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Focus Areas{% endblock %}
+{% block content %}
+<h2>Executive dashboard — Focus Areas</h2>
+<div class="cards">
+  <div class="card"><div class="value">{{ processes|length }}</div><div class="label">Processes mapped</div></div>
+  <div class="card"><div class="value">{{ roles_count }}</div><div class="label">Roles defined</div></div>
+  <div class="card"><div class="value">{{ defects_total }}</div><div class="label">Open defects (all dims)</div></div>
+  <div class="card"><div class="value">{{ approved_pct }}%</div><div class="label">RACI published</div></div>
+</div>
+
+<div class="cards">
+  {% for sev, count in by_severity.items() %}
+  <div class="card"><div class="value sev-{{ sev }}">{{ count }}</div><div class="label">{{ sev }} severity</div></div>
+  {% endfor %}
+</div>
+
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+  <div class="panel">
+    <h3>Top processes by defect density</h3>
+    <ol>
+      {% for name, count in focus_processes %}
+      <li><strong>{{ name }}</strong> — {{ count }} defects</li>
+      {% else %}
+      <li>No defects detected.</li>
+      {% endfor %}
+    </ol>
+  </div>
+  <div class="panel">
+    <h3>Most Responsible (R) assignments</h3>
+    <ol>
+      {% for name, count in overloaded_roles %}
+      <li><strong>{{ name }}</strong> — {{ count }} R assignments</li>
+      {% else %}
+      <li>No role load data.</li>
+      {% endfor %}
+    </ol>
+  </div>
+</div>
+
+<p><a class="btn" href="/defects">View all defects</a> <a class="btn btn-secondary" href="/processes">Manage processes</a></p>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}RACI — {{ matrix.process.name if matrix.process else 'Process' }}{% endblock %}
+{% block content %}
+{% if matrix.process %}
+<h2>RACI matrix: {{ matrix.process.name }}</h2>
+<p>3-D RACI — select dimension view. Cells accept R, A, C, I (e.g. R/A).</p>
+
+<div class="tabs">
+  {% for d in dimensions %}
+  <a href="/raci/{{ matrix.process.id }}?dimension={{ d.slug }}" class="{% if d.slug == current_dimension %}active{% endif %}">{{ d.name }}</a>
+  {% endfor %}
+</div>
+
+{% if defects %}
+<div class="panel">
+  <strong>{{ defects|length }} defects</strong> in this view —
+  <a href="/defects?dimension={{ current_dimension }}">filter defect list</a>
+</div>
+{% endif %}
+
+<div style="overflow-x:auto; max-height: 70vh;">
+<table class="raci-table">
+  <thead>
+    <tr>
+      <th class="activity-col">Activity</th>
+      {% for role in matrix.roles %}
+      <th class="role-col">{{ role.name }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for act in matrix.activities %}
+    <tr>
+      <td class="activity-col">{{ act.name }}</td>
+      {% for role in matrix.roles %}
+      {% set key = act.id ~ ':' ~ role.id %}
+      <td class="{% if key in defect_cells %}cell-defect{% endif %}">
+        <form method="post" action="/raci/{{ matrix.process.id }}/cell" style="margin:0">
+          <input type="hidden" name="activity_id" value="{{ act.id }}">
+          <input type="hidden" name="role_id" value="{{ role.id }}">
+          <input type="hidden" name="dimension_id" value="{{ matrix.dimension.id }}">
+          <input type="hidden" name="dimension" value="{{ current_dimension }}">
+          <input name="letters" value="{{ matrix.cells.get(key, '') }}" maxlength="8" title="RACI letters">
+        </form>
+      </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+<p><small>Tab out of a cell and submit via Enter — or add a Save button in a future iteration. Click defect highlights for issues.</small></p>
+<p>
+  <a class="btn" href="/raci/{{ matrix.process.id }}/export.csv?dimension={{ current_dimension }}">Export CSV</a>
+  <a class="btn btn-secondary" href="/raci/{{ matrix.process.id }}/export.json?dimension={{ current_dimension }}">Export JSON</a>
+  <a href="/processes/{{ matrix.process.id }}">← Activities</a>
+  <a href="/processes/{{ matrix.process.id }}/diagram">Diagram</a>
+</p>
+{% else %}
+<p>Process not found.</p>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+<script>
+document.querySelectorAll('.raci-table input[name=letters]').forEach(inp => {
+  inp.addEventListener('change', () => inp.form.submit());
+});
+</script>
+{% endblock %}
