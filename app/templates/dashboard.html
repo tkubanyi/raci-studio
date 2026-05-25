@@ -10,7 +10,7 @@
 </div>
 
 <div class="cards">
-  {% for sev, count in by_severity.items() %}
+  {% for sev, count in by_severity_items %}
   <div class="card"><div class="value sev-{{ sev }}">{{ count }}</div><div class="label">{{ sev }} severity</div></div>
   {% endfor %}
 </div>

@@ -22,6 +22,7 @@ from app.services.raci import build_matrix, upsert_cell
 
 settings = get_settings()
 templates = Jinja2Templates(directory=str(BASE_DIR / "app" / "templates"))
+templates.env.cache_size = 0
 
 app = FastAPI(title=settings.app_title, version="1.0.0-prototype")
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "app" / "static")), name="static")
@@ -30,7 +31,6 @@ app.mount("/static", StaticFiles(directory=str(BASE_DIR / "app" / "static")), na
 def template_ctx(request: Request, **extra):
     return {
         "request": request,
-        "settings": settings,
         "client": settings.client_name,
         "deliverer": settings.deliverer,
         "engagement": settings.engagement_name,
@@ -97,13 +97,14 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
     )[:10]
 
     return templates.TemplateResponse(
+        request,
         "dashboard.html",
         template_ctx(
             request,
             processes=processes,
             roles_count=len(roles),
             defects_total=len(defects),
-            by_severity=by_severity,
+            by_severity_items=list(by_severity.items()),
             focus_processes=focus_processes,
             overloaded_roles=overloaded,
             approved_pct=int(100 * sum(1 for p in processes if p.status == "published") / max(len(processes), 1)),
@@ -114,7 +115,7 @@ def dashboard(request: Request, db: Session = Depends(get_db)):
 @app.get("/roles", response_class=HTMLResponse)
 def roles_list(request: Request, db: Session = Depends(get_db)):
     roles = db.query(Role).order_by(Role.name).all()
-    return templates.TemplateResponse("roles.html", template_ctx(request, roles=roles))
+    return templates.TemplateResponse(request, "roles.html", template_ctx(request, roles=roles))
 
 
 @app.post("/roles")
@@ -151,7 +152,7 @@ def role_delete(role_id: int, db: Session = Depends(get_db)):
 @app.get("/processes", response_class=HTMLResponse)
 def processes_list(request: Request, db: Session = Depends(get_db)):
     processes = db.query(Process).order_by(Process.name).all()
-    return templates.TemplateResponse("processes.html", template_ctx(request, processes=processes))
+    return templates.TemplateResponse(request, "processes.html", template_ctx(request, processes=processes))
 
 
 @app.post("/processes")
@@ -177,6 +178,7 @@ def process_detail(process_id: int, request: Request, db: Session = Depends(get_
     )
     roles = db.query(Role).order_by(Role.name).all()
     return templates.TemplateResponse(
+        request,
         "process_detail.html",
         template_ctx(request, process=process, roles=roles),
     )
@@ -224,6 +226,7 @@ def process_diagram(process_id: int, request: Request, db: Session = Depends(get
         mermaid_lines.append(f"    Start([Start]) --> A{acts[0].id}")
     mermaid = "\n".join(mermaid_lines)
     return templates.TemplateResponse(
+        request,
         "diagram.html",
         template_ctx(request, process=process, mermaid=mermaid),
     )
@@ -253,6 +256,7 @@ def raci_view(
             defect_cells.add(f"{d.activity_id}:{d.role_id}")
 
     return templates.TemplateResponse(
+        request,
         "raci.html",
         template_ctx(
             request,
@@ -296,6 +300,7 @@ def defects_view(
     if severity:
         defects = [d for d in defects if d.severity.value == severity]
     return templates.TemplateResponse(
+        request,
         "defects.html",
         template_ctx(request, defects=defects, dimensions=dimensions, filter_dimension=dimension, filter_severity=severity),
     )
@@ -305,6 +310,7 @@ def defects_view(
 def documents_list(request: Request, db: Session = Depends(get_db)):
     docs = db.query(Document).order_by(Document.created_at.desc()).all()
     return templates.TemplateResponse(
+        request,
         "documents.html",
         template_ctx(request, documents=docs, has_llm=settings.has_llm),
     )
@@ -353,6 +359,7 @@ def document_detail(doc_id: int, request: Request, db: Session = Depends(get_db)
             extraction = {"raw": doc.extraction_summary}
     preview = (doc.extracted_text or "")[:4000] if doc else ""
     return templates.TemplateResponse(
+        request,
         "document_detail.html",
         template_ctx(request, document=doc, preview=preview, extraction=extraction),
     )
