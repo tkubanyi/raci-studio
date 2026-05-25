@@ -2,25 +2,43 @@
 {% block title %}Documents{% endblock %}
 {% block content %}
 <h2>Document ingestion</h2>
-<p>Upload Word, PDF, Excel, Markdown, or text. {% if has_llm %}LLM extraction enabled via OPENAI_API_KEY.{% else %}Using heuristic extraction (set OPENAI_API_KEY for LLM mode).{% endif %}</p>
+{% if flash_message %}
+<p class="panel" style="border-left: 4px solid var(--gp-teal);"><strong>{{ flash_message|replace('+', ' ') }}</strong></p>
+{% endif %}
+<p>Upload an SOP or process document. The app extracts text, builds a <strong>new process</strong> with activities and RACI assignments, and adds it to the process registry.</p>
+<p>{% if has_llm %}LLM extraction enabled (OPENAI_API_KEY).{% else %}Using heuristic extraction — set OPENAI_API_KEY for richer results.{% endif %}</p>
 
 <form class="inline" method="post" action="/documents/upload" enctype="multipart/form-data">
   <label>File <input type="file" name="file" accept=".txt,.md,.docx,.pdf,.xlsx" required></label>
-  <button class="btn" type="submit">Upload & extract</button>
+  <label>Domain <input name="domain" value="Finance"></label>
+  <button class="btn" type="submit">Upload, extract &amp; create process</button>
 </form>
 
 <table>
-  <thead><tr><th>File</th><th>Status</th><th>Uploaded</th><th></th></tr></thead>
+  <thead><tr><th>File</th><th>Status</th><th>Created processes</th><th>Uploaded</th><th>Actions</th></tr></thead>
   <tbody>
-    {% for doc in documents %}
+    {% for row in doc_rows %}
+    {% set doc = row.doc %}
     <tr>
       <td>{{ doc.filename }}</td>
       <td>{{ doc.status }}</td>
+      <td>
+        {% for pid, pname in row.linked %}
+        <a href="/processes/{{ pid }}">{{ pname }}</a>{% if not loop.last %}, {% endif %}
+        {% else %}
+        —
+        {% endfor %}
+      </td>
       <td>{{ doc.created_at.strftime('%Y-%m-%d %H:%M') if doc.created_at else '' }}</td>
-      <td><a href="/documents/{{ doc.id }}">View</a></td>
+      <td>
+        <a href="/documents/{{ doc.id }}">View</a>
+        <form method="post" action="/documents/{{ doc.id }}/delete" style="display:inline" onsubmit="return confirm('Delete this document? Linked processes will remain in the registry.');">
+          <button type="submit" class="btn" style="background:#667085;padding:0.2rem 0.5rem;font-size:0.75rem">Delete</button>
+        </form>
+      </td>
     </tr>
     {% else %}
-    <tr><td colspan="4">No documents yet.</td></tr>
+    <tr><td colspan="5">No documents yet.</td></tr>
     {% endfor %}
   </tbody>
 </table>

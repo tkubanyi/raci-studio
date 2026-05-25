@@ -3,12 +3,52 @@
 {% block content %}
 {% if document %}
 <h2>{{ document.filename }}</h2>
-<p>Status: {{ document.status }} · Extraction: <code>{{ extraction }}</code></p>
+{% if flash_message %}
+<p class="panel"><strong>{{ flash_message|replace('+', ' ') }}</strong></p>
+{% endif %}
+<p>Status: <strong>{{ document.status }}</strong> · Mode: {{ extraction.mode if extraction.mode else '—' }}</p>
+
+{% if linked_processes %}
+<div class="panel">
+  <h3>Processes created from this document</h3>
+  <ul>
+    {% for p in linked_processes %}
+    <li><a href="/processes/{{ p.id }}">{{ p.name }}</a> — <a href="/raci/{{ p.id }}">RACI</a> · <a href="/processes/{{ p.id }}/diagram">Diagram</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% else %}
+<div class="panel">
+  <p>No processes linked yet.</p>
+  <form method="post" action="/documents/{{ document.id }}/build-processes">
+    <label>Domain <input name="domain" value="Finance"></label>
+    <button class="btn" type="submit">Create processes from extracted text</button>
+  </form>
+</div>
+{% endif %}
+
+{% if extraction.ambiguities %}
+<div class="panel">
+  <h3>Review notes</h3>
+  <ul>
+    {% for a in extraction.ambiguities %}
+    <li>{{ a.reason if a.reason else a }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
 <div class="panel">
   <h3>Extracted text (preview)</h3>
   <pre style="white-space: pre-wrap; font-size: 0.8rem; max-height: 400px; overflow: auto;">{{ preview }}</pre>
 </div>
-<a href="/documents">← Documents</a>
+
+<p>
+  <a href="/documents">← Documents</a>
+  <form method="post" action="/documents/{{ document.id }}/delete" style="display:inline" onsubmit="return confirm('Delete this document?');">
+    <button type="submit" class="btn" style="background:#667085">Delete document</button>
+  </form>
+</p>
 {% else %}
 <p>Document not found.</p>
 {% endif %}

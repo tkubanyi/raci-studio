@@ -2,11 +2,17 @@
 {% block title %}{{ process.name }}{% endblock %}
 {% block content %}
 <h2>{{ process.name }}</h2>
+{% if flash_message %}
+<p class="panel" style="border-left: 4px solid var(--gp-teal);"><strong>{{ flash_message|replace('+', ' ') }}</strong></p>
+{% endif %}
 <p>{{ process.description or '' }} <em>({{ process.status }} v{{ process.version }})</em></p>
 <p>
   <a class="btn" href="/raci/{{ process.id }}">Open RACI matrix</a>
   <a class="btn btn-secondary" href="/processes/{{ process.id }}/diagram">Process diagram</a>
   <a href="/processes">← Back</a>
+  <form method="post" action="/processes/{{ process.id }}/delete" style="display:inline" onsubmit="return confirm('Delete this process and all activities?');">
+    <button type="submit" class="btn" style="background:#b42318">Delete process</button>
+  </form>
 </p>
 
 <h3>Activities</h3>

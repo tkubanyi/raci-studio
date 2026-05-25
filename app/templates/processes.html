@@ -2,6 +2,9 @@
 {% block title %}Processes{% endblock %}
 {% block content %}
 <h2>Process registry</h2>
+{% if flash_message %}
+<p class="panel" style="border-left: 4px solid var(--gp-teal);"><strong>{{ flash_message|replace('+', ' ') }}</strong></p>
+{% endif %}
 
 <form class="inline" method="post" action="/processes">
   <label>Name <input name="name" required placeholder="Process name"></label>
@@ -23,6 +26,9 @@
         <a href="/processes/{{ p.id }}">Activities</a> |
         <a href="/raci/{{ p.id }}">RACI</a> |
         <a href="/processes/{{ p.id }}/diagram">Diagram</a>
+        <form method="post" action="/processes/{{ p.id }}/delete" style="display:inline" onsubmit="return confirm('Delete process {{ p.name }} and all its activities?');">
+          <button type="submit" class="btn" style="background:#b42318;padding:0.2rem 0.5rem;font-size:0.75rem">Delete</button>
+        </form>
       </td>
     </tr>
     {% endfor %}

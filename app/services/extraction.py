@@ -54,9 +54,10 @@ def heuristic_extract(text: str) -> ExtractionResult:
         for line in lines[:15]:
             activities.append(ExtractedActivity(line[:100], "Unassigned", "R", 0.4))
 
+    owner = next(iter(roles), None) or "Process Owner"
     proc = {
         "name": "Extracted Process",
-        "owner": next(iter(roles), "Process Owner"),
+        "owner": owner,
         "activities": [
             {
                 "name": a.name,
