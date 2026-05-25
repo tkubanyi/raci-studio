@@ -10,7 +10,8 @@ from app.database import Base
 from app.models import Activity, Process
 from app.seed import seed_database
 from app.services.extraction import ExtractionResult
-from app.services.process_import import import_from_extraction
+from app.models import Document
+from app.services.process_import import delete_document, import_from_extraction
 
 
 @pytest.fixture
@@ -51,3 +52,18 @@ def test_import_creates_process_and_activities(db):
     assert len(acts) == 2
     assert acts[0].is_start
     assert acts[1].predecessor_ids == str(acts[0].id)
+
+
+def test_delete_document(db):
+    ws = db.query(Process).first().workspace_id
+    doc = Document(
+        workspace_id=ws,
+        filename="delete_me.txt",
+        storage_path="uploads/delete_me.txt",
+        status="extracted",
+    )
+    db.add(doc)
+    db.commit()
+    doc_id = doc.id
+    assert delete_document(db, doc_id) is True
+    assert db.query(Document).filter(Document.id == doc_id).first() is None

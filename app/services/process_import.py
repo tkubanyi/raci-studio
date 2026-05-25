@@ -7,7 +7,7 @@ from pathlib import Path
 
 from sqlalchemy.orm import Session
 
-from app.models import DIMENSION_SLUGS, Activity, ActivityRole, Dimension, Process, Role
+from app.models import DIMENSION_SLUGS, Activity, ActivityRole, Dimension, Document, Process, Role
 from app.services.extraction import ExtractionResult
 
 
