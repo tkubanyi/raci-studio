@@ -18,7 +18,9 @@ from app.models import DIMENSION_LABELS, Activity, ActivityRole, Dimension, Docu
 from app.seed import seed_database
 from app.services.ai import extract_processes_from_document
 from app.services.diagram import (
+    apply_diagram_to_database,
     diagram_from_process,
+    enrich_diagram_with_raci,
     parse_diagram_json,
     render_mermaid_swimlane,
 )
@@ -230,8 +232,143 @@ def activity_create(
     return RedirectResponse(f"/processes/{process_id}", status_code=303)
 
 
+def _load_process_diagram(
+    db: Session,
+    process_id: int,
+    dimension_slug: str = "ssc_ops",
+) -> tuple[Process | None, dict, Dimension | None]:
+    process = (
+        db.query(Process)
+        .options(joinedload(Process.activities).joinedload(Activity.assignments).joinedload(ActivityRole.role))
+        .filter(Process.id == process_id)
+        .first()
+    )
+    if not process:
+        return None, {}, None
+
+    dim = db.query(Dimension).filter_by(slug=dimension_slug).first()
+    roles = db.query(Role).order_by(Role.name).all()
+    roles_by_id = {r.id: r.name for r in roles}
+
+    diagram = parse_diagram_json(process.diagram_json)
+    acts = sorted(process.activities, key=lambda a: a.sequence)
+    if not diagram or not diagram.get("nodes"):
+        diagram = diagram_from_process(process, acts, role_names=roles_by_id)
+
+    if dim:
+        diagram = enrich_diagram_with_raci(diagram, acts, dim.id, roles_by_id)
+    return process, diagram, dim
+
+
 @app.get("/processes/{process_id}/diagram", response_class=HTMLResponse)
-def process_diagram(process_id: int, request: Request, db: Session = Depends(get_db)):
+def process_diagram(
+    process_id: int,
+    request: Request,
+    dimension: str = "ssc_ops",
+    db: Session = Depends(get_db),
+):
+    process, diagram, dim = _load_process_diagram(db, process_id, dimension)
+    if not process:
+        return RedirectResponse("/processes", status_code=303)
+
+    dimensions = db.query(Dimension).order_by(Dimension.id).all()
+    roles = db.query(Role).order_by(Role.name).all()
+    mermaid = render_mermaid_swimlane(diagram)
+    diagram_payload = {
+        "process_id": process.id,
+        "dimension": dimension,
+        "dimensions": [{"slug": d.slug, "name": d.name} for d in dimensions],
+        "roles": [{"id": r.id, "name": r.name} for r in roles],
+        "diagram": diagram,
+    }
+    return templates.TemplateResponse(
+        request,
+        "diagram.html",
+        template_ctx(
+            request,
+            process=process,
+            mermaid=mermaid,
+            diagram=diagram,
+            dimensions=dimensions,
+            current_dimension=dimension,
+            diagram_payload=diagram_payload,
+        ),
+    )
+
+
+@app.get("/api/processes/{process_id}/diagram")
+def api_process_diagram(
+    process_id: int,
+    dimension: str = "ssc_ops",
+    db: Session = Depends(get_db),
+):
+    process, diagram, dim = _load_process_diagram(db, process_id, dimension)
+    if not process:
+        return JSONResponse({"error": "not found"}, status_code=404)
+    return JSONResponse(
+        {
+            "process_id": process.id,
+            "dimension": dimension,
+            "dimension_id": dim.id if dim else None,
+            "diagram": diagram,
+        }
+    )
+
+
+@app.post("/api/processes/{process_id}/diagram")
+async def api_process_diagram_save(
+    process_id: int,
+    request: Request,
+    db: Session = Depends(get_db),
+):
+    process = db.query(Process).filter(Process.id == process_id).first()
+    if not process:
+        return JSONResponse({"error": "not found"}, status_code=404)
+
+    body = await request.json()
+    diagram = body.get("diagram")
+    dimension_slug = body.get("dimension", "ssc_ops")
+    if not diagram or not isinstance(diagram, dict):
+        return JSONResponse({"error": "diagram required"}, status_code=400)
+
+    dim = db.query(Dimension).filter_by(slug=dimension_slug).first()
+    if not dim:
+        return JSONResponse({"error": "invalid dimension"}, status_code=400)
+
+    apply_diagram_to_database(
+        db,
+        process,
+        diagram,
+        dim.id,
+        workspace_id=process.workspace_id,
+    )
+
+    process = (
+        db.query(Process)
+        .options(joinedload(Process.activities).joinedload(Activity.assignments).joinedload(ActivityRole.role))
+        .filter(Process.id == process_id)
+        .first()
+    )
+    roles = db.query(Role).order_by(Role.name).all()
+    roles_by_id = {r.id: r.name for r in roles}
+    acts = sorted(process.activities, key=lambda a: a.sequence)
+    diagram = parse_diagram_json(process.diagram_json) or diagram
+    enriched = enrich_diagram_with_raci(diagram, acts, dim.id, roles_by_id)
+    return JSONResponse(
+        {
+            "ok": True,
+            "diagram": enriched,
+            "mermaid": render_mermaid_swimlane(enriched),
+        }
+    )
+
+
+@app.post("/processes/{process_id}/diagram/reset")
+def process_diagram_reset(
+    process_id: int,
+    dimension: str = "ssc_ops",
+    db: Session = Depends(get_db),
+):
     process = (
         db.query(Process)
         .options(joinedload(Process.activities).joinedload(Activity.assignments).joinedload(ActivityRole.role))
@@ -241,22 +378,17 @@ def process_diagram(process_id: int, request: Request, db: Session = Depends(get
     if not process:
         return RedirectResponse("/processes", status_code=303)
 
-    diagram = parse_diagram_json(process.diagram_json)
+    roles = db.query(Role).order_by(Role.name).all()
+    roles_by_id = {r.id: r.name for r in roles}
     acts = sorted(process.activities, key=lambda a: a.sequence)
-    if not diagram or not diagram.get("nodes"):
-        diagram = diagram_from_process(process, acts)
+    from app.services.diagram import diagram_json_dumps
 
-    mermaid = render_mermaid_swimlane(diagram)
-    return templates.TemplateResponse(
-        request,
-        "diagram.html",
-        template_ctx(
-            request,
-            process=process,
-            mermaid=mermaid,
-            diagram=diagram,
-            activities=acts,
-        ),
+    diagram = diagram_from_process(process, acts, role_names=roles_by_id)
+    process.diagram_json = diagram_json_dumps(diagram)
+    db.commit()
+    return RedirectResponse(
+        f"/processes/{process_id}/diagram?dimension={quote(dimension)}",
+        status_code=303,
     )
 
 

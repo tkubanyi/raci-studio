@@ -92,3 +92,136 @@
   display: block;
   line-height: 1.3;
 }
+
+/* Diagram editor toolbar */
+.diagram-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border: 1px solid var(--border, #dde3ea);
+  border-radius: 8px;
+}
+
+.diagram-toolbar label {
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+#editor-status {
+  font-size: 0.85rem;
+  color: #0a2540;
+  margin-left: auto;
+}
+
+.diagram-editing .swimlane-node {
+  border-style: dashed;
+  min-width: 140px;
+}
+
+.node-edit,
+.lane-edit {
+  width: 100%;
+  border: 1px solid #00a19c;
+  border-radius: 4px;
+  padding: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.node-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.35rem;
+  justify-content: center;
+}
+
+.btn-mini {
+  font-size: 0.65rem;
+  padding: 0.15rem 0.35rem;
+  border: 1px solid #667085;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-mini.btn-danger {
+  border-color: #b42318;
+  color: #b42318;
+}
+
+.node-lane-move {
+  font-size: 0.65rem;
+  max-width: 90px;
+}
+
+/* RACI overlay on diagram nodes */
+.raci-overlay {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  justify-content: center;
+  margin-top: 0.4rem;
+}
+
+.raci-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  background: #e8f4f4;
+  color: #0a2540;
+  border: 1px solid #00a19c;
+  line-height: 1.2;
+}
+
+.raci-badge small {
+  display: block;
+  font-weight: 500;
+  font-size: 0.55rem;
+  opacity: 0.85;
+}
+
+.raci-badge.raci-a {
+  background: #d04a02;
+  color: #fff;
+  border-color: #a83b01;
+}
+
+.raci-badge.raci-r {
+  background: #0a2540;
+  color: #fff;
+  border-color: #0a2540;
+}
+
+.raci-badge.raci-c {
+  background: #fff3e6;
+  border-color: #d04a02;
+  color: #a83b01;
+}
+
+.raci-badge.raci-i {
+  background: #f4f6f8;
+  border-color: #667085;
+  color: #667085;
+}
+
+.swimlane-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.swimlane-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}

@@ -121,3 +121,177 @@ def parse_diagram_json(raw: str | None) -> dict | None:
 
 def diagram_json_dumps(diagram: dict) -> str:
     return json.dumps(diagram, indent=2)
+
+
+def enrich_diagram_with_raci(
+    diagram: dict,
+    activities: list,
+    dimension_id: int,
+    roles_by_id: dict[int, str] | None = None,
+) -> dict:
+    """Attach RACI overlay badges to each node linked to an activity."""
+    roles_by_id = roles_by_id or {}
+    act_map = {a.id: a for a in activities}
+    out = {**diagram, "lanes": list(diagram.get("lanes") or []), "nodes": [], "edges": list(diagram.get("edges") or [])}
+
+    for node in diagram.get("nodes") or []:
+        n = {**node}
+        aid = node.get("activity_id")
+        if aid and aid in act_map:
+            act = act_map[aid]
+            overlay = []
+            for ar in act.assignments:
+                if ar.dimension_id == dimension_id and (ar.letters or "").strip():
+                    overlay.append(
+                        {
+                            "role_id": ar.role_id,
+                            "role_name": roles_by_id.get(ar.role_id)
+                            or (ar.role.name if getattr(ar, "role", None) else f"Role {ar.role_id}"),
+                            "letters": (ar.letters or "").upper(),
+                        }
+                    )
+            overlay.sort(key=lambda x: x["role_name"])
+            n["raci_overlay"] = overlay
+        else:
+            n["raci_overlay"] = []
+        out["nodes"].append(n)
+    return out
+
+
+def _lane_id_for_role_name(role_name: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "_", role_name.lower()).strip("_") or "lane_default"
+
+
+def apply_diagram_to_database(
+    db,
+    process,
+    diagram: dict,
+    dimension_id: int,
+    *,
+    workspace_id: int,
+) -> None:
+    """Persist diagram edits: activity names, order, lanes (primary R), RACI overlays."""
+    from app.models import Activity, ActivityRole, Role
+
+    lanes_by_id = {l["id"]: l.get("label", l["id"]) for l in diagram.get("lanes") or []}
+    nodes = list(diagram.get("nodes") or [])
+    edges = diagram.get("edges") or []
+
+    # Topological order from edges, fallback to list order
+    ordered_ids: list[str] = []
+    node_ids = {n["id"] for n in nodes}
+    targets = {e["to"] for e in edges if e.get("to") in node_ids}
+    starts = [n["id"] for n in nodes if n["id"] not in targets]
+    if not starts and nodes:
+        starts = [nodes[0]["id"]]
+    visited: set[str] = set()
+
+    def walk(nid: str) -> None:
+        if nid in visited:
+            return
+        visited.add(nid)
+        ordered_ids.append(nid)
+        for e in edges:
+            if e.get("from") == nid and e.get("to") in node_ids:
+                walk(e["to"])
+
+    for s in starts:
+        walk(s)
+    for n in nodes:
+        if n["id"] not in visited:
+            ordered_ids.append(n["id"])
+
+    id_to_node = {n["id"]: n for n in nodes}
+    prev_db_id: int | None = None
+
+    for seq, nid in enumerate(ordered_ids, start=1):
+        node = id_to_node.get(nid)
+        if not node:
+            continue
+        lane_label = lanes_by_id.get(node.get("lane_id"), "Process")
+        activity_id = node.get("activity_id")
+
+        if activity_id:
+            act = db.query(Activity).filter(Activity.id == activity_id, Activity.process_id == process.id).first()
+        else:
+            act = None
+
+        if not act:
+            act = Activity(
+                process_id=process.id,
+                name=(node.get("label") or f"Step {seq}")[:200],
+                sequence=seq,
+                is_start=seq == 1,
+            )
+            db.add(act)
+            db.flush()
+            node["activity_id"] = act.id
+        else:
+            act.name = (node.get("label") or act.name)[:200]
+            act.sequence = seq
+            act.is_start = seq == 1
+            act.predecessor_ids = str(prev_db_id) if prev_db_id else None
+
+        ntype = node.get("type") or "task"
+        if ntype == "decision":
+            pass
+
+        # Apply RACI overlay from editor
+        for item in node.get("raci_overlay") or []:
+            rid = item.get("role_id")
+            letters = (item.get("letters") or "").upper()
+            if rid and letters:
+                ar = (
+                    db.query(ActivityRole)
+                    .filter_by(activity_id=act.id, role_id=rid, dimension_id=dimension_id)
+                    .first()
+                )
+                if ar:
+                    ar.letters = letters
+                else:
+                    db.add(
+                        ActivityRole(
+                            activity_id=act.id,
+                            role_id=rid,
+                            dimension_id=dimension_id,
+                            letters=letters,
+                        )
+                    )
+
+        # Ensure lane role has at least R on this dimension if overlay empty
+        lane_role = (
+            db.query(Role)
+            .filter(Role.workspace_id == workspace_id, Role.name.ilike(lane_label.strip()))
+            .first()
+        )
+        if not lane_role:
+            lane_role = Role(workspace_id=workspace_id, name=lane_label[:200], in_hris=True, fte=1.0)
+            db.add(lane_role)
+            db.flush()
+
+        has_r = any(
+            (item.get("letters") or "").upper().find("R") >= 0 for item in (node.get("raci_overlay") or [])
+        )
+        if not has_r:
+            ar = (
+                db.query(ActivityRole)
+                .filter_by(activity_id=act.id, role_id=lane_role.id, dimension_id=dimension_id)
+                .first()
+            )
+            if ar:
+                if "R" not in (ar.letters or "").upper():
+                    ar.letters = ((ar.letters or "") + "R").upper()
+            else:
+                db.add(
+                    ActivityRole(
+                        activity_id=act.id,
+                        role_id=lane_role.id,
+                        dimension_id=dimension_id,
+                        letters="R",
+                    )
+                )
+
+        prev_db_id = act.id
+
+    process.diagram_json = diagram_json_dumps(diagram)
+    db.commit()

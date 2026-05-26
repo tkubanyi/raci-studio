@@ -2,6 +2,8 @@
 {% block title %}Diagram — {{ process.name }}{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="/static/css/swimlane.css">
+<script type="application/json" id="diagram-data">{{ diagram_payload | tojson }}</script>
+<script src="/static/js/diagram-editor.js" defer></script>
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
   mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: {
@@ -15,22 +17,33 @@
 {% endblock %}
 {% block content %}
 <h2>Process map: {{ process.name }}</h2>
-<p>Visio-style swimlane view with flow connectors. Generated from document AI extraction or activity model.</p>
+<p>Edit swimlanes and steps, overlay RACI assignments by dimension, then save to update activities and the RACI matrix.</p>
 
-<div class="swimlane-board">
-  {% for lane in diagram.lanes %}
-  <div class="swimlane-row">
-    <div class="swimlane-header">{{ lane.label }}</div>
-    <div class="swimlane-track">
-      {% for node in diagram.nodes if node.lane_id == lane.id %}
-      <div class="swimlane-node swimlane-node--{{ node.type or 'task' }}" id="node-{{ node.id }}">
-        <span class="node-label">{{ node.label }}</span>
-      </div>
+<div class="diagram-toolbar">
+  <label><input type="checkbox" id="toggle-edit"> Edit mode</label>
+  <label><input type="checkbox" id="toggle-raci" checked> Show RACI overlay</label>
+  <label>RACI dimension
+    <select id="raci-dimension">
+      {% for d in dimensions %}
+      <option value="{{ d.slug }}" {% if d.slug == current_dimension %}selected{% endif %}>{{ d.name }}</option>
       {% endfor %}
-    </div>
-  </div>
-  {% endfor %}
+    </select>
+  </label>
+  <button type="button" class="btn btn-secondary" id="btn-add-lane">+ Lane</button>
+  <button type="button" class="btn btn-secondary" id="btn-add-step">+ Step</button>
+  <button type="button" class="btn" id="btn-save">Save diagram</button>
+  <button type="button" class="btn" id="btn-reset" style="background:#667085">Reset from activities</button>
+  <span id="editor-status"></span>
 </div>
+
+<div class="swimlane-legend">
+  <span><span class="raci-badge raci-r">R</span> Responsible</span>
+  <span><span class="raci-badge raci-a">A</span> Accountable</span>
+  <span><span class="raci-badge raci-c">C</span> Consulted</span>
+  <span><span class="raci-badge raci-i">I</span> Informed</span>
+</div>
+
+<div class="swimlane-board" id="diagram-board"></div>
 
 <div class="panel" style="margin-top:1.5rem">
   <h3>Mermaid view (export-friendly)</h3>
@@ -39,15 +52,8 @@
   </div>
 </div>
 
-{% if process.description %}
-<div class="panel">
-  <h3>Process description</h3>
-  <p style="white-space: pre-wrap;">{{ process.description }}</p>
-</div>
-{% endif %}
-
 <p>
-  <a class="btn" href="/raci/{{ process.id }}">RACI matrix</a>
+  <a class="btn" href="/raci/{{ process.id }}?dimension={{ current_dimension }}">RACI matrix</a>
   <a class="btn btn-secondary" href="/processes/{{ process.id }}">Activities</a>
   <a href="/processes">← Processes</a>
 </p>
