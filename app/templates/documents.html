@@ -1,17 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Documents{% endblock %}
 {% block content %}
-<h2>Document ingestion</h2>
+<h2>Document ingestion &amp; AI process mapping</h2>
 {% if flash_message %}
 <p class="panel" style="border-left: 4px solid var(--gp-teal);"><strong>{{ flash_message|replace('+', ' ') }}</strong></p>
 {% endif %}
-<p>Upload an SOP or process document. The app extracts text, builds a <strong>new process</strong> with activities and RACI assignments, and adds it to the process registry.</p>
-<p>{% if has_llm %}LLM extraction enabled (OPENAI_API_KEY).{% else %}Using heuristic extraction — set OPENAI_API_KEY for richer results.{% endif %}</p>
+
+<p>Upload operating procedures, diagrams, or photos. The app reads the content, uses {% if has_llm %}<strong>AI ({{ vision_model }} for images/PDF)</strong>{% else %}<strong>heuristic parsing</strong> — set <code>OPENAI_API_KEY</code> for AI{% endif %}, builds a <strong>process description</strong>, <strong>activities</strong>, <strong>RACI</strong>, and a <strong>Visio-style swimlane chart</strong>.</p>
+
+<p class="panel" style="font-size:0.85rem"><strong>Supported formats:</strong> {{ supported_extensions }}</p>
 
 <form class="inline" method="post" action="/documents/upload" enctype="multipart/form-data">
-  <label>File <input type="file" name="file" accept=".txt,.md,.docx,.pdf,.xlsx" required></label>
+  <label>File
+    <input type="file" name="file" accept=".txt,.md,.docx,.pdf,.pptx,.xlsx,.png,.jpg,.jpeg,.gif,.webp,.vsdx,.vsdm" required>
+  </label>
   <label>Domain <input name="domain" value="Finance"></label>
-  <button class="btn" type="submit">Upload, extract &amp; create process</button>
+  <button class="btn" type="submit">Upload → extract → create process map</button>
 </form>
 
 <table>
@@ -32,7 +36,7 @@
       <td>{{ doc.created_at.strftime('%Y-%m-%d %H:%M') if doc.created_at else '' }}</td>
       <td>
         <a href="/documents/{{ doc.id }}">View</a>
-        <form method="post" action="/documents/{{ doc.id }}/delete" style="display:inline" onsubmit="return confirm('Delete this document? Linked processes will remain in the registry.');">
+        <form method="post" action="/documents/{{ doc.id }}/delete" style="display:inline" onsubmit="return confirm('Delete this document? Linked processes remain.');">
           <button type="submit" class="btn" style="background:#667085;padding:0.2rem 0.5rem;font-size:0.75rem">Delete</button>
         </form>
       </td>

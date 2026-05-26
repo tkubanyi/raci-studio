@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     database_url: str = f"sqlite:///{BASE_DIR / 'raci_studio.db'}"
     openai_api_key: str | None = None
     openai_model: str = "gpt-4o-mini"
+    openai_vision_model: str = "gpt-4o"
     upload_dir: Path = BASE_DIR / "uploads"
     max_upload_mb: int = 50
     role_overload_threshold: float = 0.30

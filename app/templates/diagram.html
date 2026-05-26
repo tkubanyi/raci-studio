@@ -1,19 +1,54 @@
 {% extends "base.html" %}
 {% block title %}Diagram — {{ process.name }}{% endblock %}
 {% block head %}
+<link rel="stylesheet" href="/static/css/swimlane.css">
 <script type="module">
   import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+  mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: {
+    primaryColor: '#e8f4f4',
+    primaryTextColor: '#0a2540',
+    primaryBorderColor: '#00a19c',
+    lineColor: '#0a2540',
+    fontSize: '14px'
+  }}});
 </script>
 {% endblock %}
 {% block content %}
-<h2>Process diagram: {{ process.name }}</h2>
-<p>Swimlane-style flow (Mermaid). Linked to structured activity model.</p>
-<div class="mermaid-wrap">
-  <pre class="mermaid">{{ mermaid }}</pre>
+<h2>Process map: {{ process.name }}</h2>
+<p>Visio-style swimlane view with flow connectors. Generated from document AI extraction or activity model.</p>
+
+<div class="swimlane-board">
+  {% for lane in diagram.lanes %}
+  <div class="swimlane-row">
+    <div class="swimlane-header">{{ lane.label }}</div>
+    <div class="swimlane-track">
+      {% for node in diagram.nodes if node.lane_id == lane.id %}
+      <div class="swimlane-node swimlane-node--{{ node.type or 'task' }}" id="node-{{ node.id }}">
+        <span class="node-label">{{ node.label }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
 </div>
+
+<div class="panel" style="margin-top:1.5rem">
+  <h3>Mermaid view (export-friendly)</h3>
+  <div class="mermaid-wrap">
+    <pre class="mermaid">{{ mermaid }}</pre>
+  </div>
+</div>
+
+{% if process.description %}
+<div class="panel">
+  <h3>Process description</h3>
+  <p style="white-space: pre-wrap;">{{ process.description }}</p>
+</div>
+{% endif %}
+
 <p>
   <a class="btn" href="/raci/{{ process.id }}">RACI matrix</a>
-  <a href="/processes/{{ process.id }}">← Activities</a>
+  <a class="btn btn-secondary" href="/processes/{{ process.id }}">Activities</a>
+  <a href="/processes">← Processes</a>
 </p>
 {% endblock %}

@@ -1,0 +1,94 @@
+.swimlane-board {
+  background: #fff;
+  border: 1px solid #dde3ea;
+  border-radius: 8px;
+  overflow-x: auto;
+  box-shadow: 0 2px 8px rgba(10, 37, 64, 0.08);
+}
+
+.swimlane-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  border-bottom: 1px solid #dde3ea;
+  min-height: 88px;
+}
+
+.swimlane-row:last-child {
+  border-bottom: none;
+}
+
+.swimlane-header {
+  background: linear-gradient(180deg, #0a2540 0%, #123a5c 100%);
+  color: #fff;
+  padding: 1rem 0.75rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  border-right: 3px solid #00a19c;
+}
+
+.swimlane-track {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f8fafb;
+  position: relative;
+}
+
+.swimlane-node {
+  min-width: 120px;
+  max-width: 200px;
+  padding: 0.65rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  position: relative;
+}
+
+.swimlane-node--start,
+.swimlane-node--end {
+  border-radius: 999px;
+  background: #00a19c;
+  color: #fff;
+  border: 2px solid #0a2540;
+}
+
+.swimlane-node--task {
+  background: #fff;
+  border: 2px solid #0a2540;
+  color: #0a2540;
+}
+
+.swimlane-node--decision {
+  background: #fff3e6;
+  border: 2px solid #d04a02;
+  color: #a83b01;
+  transform: rotate(0deg);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  padding: 1.2rem 1rem;
+  min-width: 100px;
+}
+
+.swimlane-node::after {
+  content: "→";
+  position: absolute;
+  right: -1.1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #667085;
+  font-weight: bold;
+}
+
+.swimlane-track .swimlane-node:last-child::after {
+  content: none;
+}
+
+.node-label {
+  display: block;
+  line-height: 1.3;
+}

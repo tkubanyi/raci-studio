@@ -6,7 +6,14 @@
 {% if flash_message %}
 <p class="panel"><strong>{{ flash_message|replace('+', ' ') }}</strong></p>
 {% endif %}
-<p>Status: <strong>{{ document.status }}</strong> · Mode: {{ extraction.mode if extraction.mode else '—' }}</p>
+<p>Status: <strong>{{ document.status }}</strong> · Mode: {{ extraction.mode if extraction.mode else '—' }}{% if extraction.source_type %} · Source: {{ extraction.source_type }}{% endif %}</p>
+
+{% if extraction.processes and extraction.processes[0].process_description %}
+<div class="panel">
+  <h3>AI process description</h3>
+  <p>{{ extraction.processes[0].process_description }}</p>
+</div>
+{% endif %}
 
 {% if linked_processes %}
 <div class="panel">

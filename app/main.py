@@ -16,8 +16,14 @@ from app.database import get_db, init_db
 from app.defects.engine import DefectEngine, Severity
 from app.models import DIMENSION_LABELS, Activity, ActivityRole, Dimension, Document, Process, Role
 from app.seed import seed_database
-from app.services.extraction import heuristic_extract, llm_extract
-from app.services.ingestion import extract_text_from_file
+from app.services.ai import extract_processes_from_document
+from app.services.diagram import (
+    diagram_from_process,
+    parse_diagram_json,
+    render_mermaid_swimlane,
+)
+from app.services.extraction import heuristic_extract
+from app.services.ingestion import SUPPORTED_EXTENSIONS, ingest_file
 from app.services.process_import import (
     delete_document,
     delete_process,
@@ -226,25 +232,31 @@ def activity_create(
 
 @app.get("/processes/{process_id}/diagram", response_class=HTMLResponse)
 def process_diagram(process_id: int, request: Request, db: Session = Depends(get_db)):
-    process = db.query(Process).options(joinedload(Process.activities)).filter(Process.id == process_id).first()
-    mermaid_lines = ["flowchart LR"]
+    process = (
+        db.query(Process)
+        .options(joinedload(Process.activities).joinedload(Activity.assignments).joinedload(ActivityRole.role))
+        .filter(Process.id == process_id)
+        .first()
+    )
+    if not process:
+        return RedirectResponse("/processes", status_code=303)
+
+    diagram = parse_diagram_json(process.diagram_json)
     acts = sorted(process.activities, key=lambda a: a.sequence)
-    for act in acts:
-        node_id = f"A{act.id}"
-        label = act.name.replace('"', "'")
-        mermaid_lines.append(f'    {node_id}["{label}"]')
-    for act in acts:
-        if act.predecessor_ids:
-            for pred in act.predecessor_ids.split(","):
-                if pred.strip().isdigit():
-                    mermaid_lines.append(f"    A{pred.strip()} --> A{act.id}")
-    if len(acts) == 1:
-        mermaid_lines.append(f"    Start([Start]) --> A{acts[0].id}")
-    mermaid = "\n".join(mermaid_lines)
+    if not diagram or not diagram.get("nodes"):
+        diagram = diagram_from_process(process, acts)
+
+    mermaid = render_mermaid_swimlane(diagram)
     return templates.TemplateResponse(
         request,
         "diagram.html",
-        template_ctx(request, process=process, mermaid=mermaid),
+        template_ctx(
+            request,
+            process=process,
+            mermaid=mermaid,
+            diagram=diagram,
+            activities=acts,
+        ),
     )
 
 
@@ -345,6 +357,8 @@ def documents_list(request: Request, db: Session = Depends(get_db), msg: str = "
             request,
             doc_rows=doc_rows,
             has_llm=settings.has_llm,
+            vision_model=settings.openai_vision_model,
+            supported_extensions=", ".join(sorted(SUPPORTED_EXTENSIONS)),
             flash_message=msg,
         ),
     )
@@ -362,13 +376,12 @@ async def document_upload(
     with dest.open("wb") as f:
         shutil.copyfileobj(file.file, f)
     try:
-        text = extract_text_from_file(dest, safe_name)
+        ingestion = ingest_file(dest, safe_name)
+        result = await extract_processes_from_document(ingestion, filename=safe_name)
+        text = ingestion.text
     except Exception as exc:
-        text = f"[Extraction error: {exc}]"
-    try:
-        result = await llm_extract(text)
-    except Exception:
-        result = heuristic_extract(text)
+        text = f"[Ingestion error: {exc}]"
+        result = heuristic_extract(text, filename=safe_name)
 
     doc = Document(
         workspace_id=ws_id,
@@ -431,10 +444,14 @@ async def document_build_processes(
     if not doc.extracted_text:
         return RedirectResponse(f"/documents/{doc_id}?msg=No+extracted+text", status_code=303)
 
-    try:
-        result = await llm_extract(doc.extracted_text)
-    except Exception:
-        result = heuristic_extract(doc.extracted_text)
+    from app.services.ingestion_types import IngestionResult
+
+    ingestion = IngestionResult(
+        text=doc.extracted_text,
+        source_type="text",
+        filename=doc.filename,
+    )
+    result = await extract_processes_from_document(ingestion, filename=doc.filename)
 
     created_ids = import_from_extraction(
         db,

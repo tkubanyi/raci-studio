@@ -1,7 +1,7 @@
 from collections.abc import Generator
 from pathlib import Path
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 from app.config import get_settings
@@ -36,3 +36,15 @@ def init_db() -> None:
         db_path = settings.database_url.replace("sqlite:///", "")
         Path(db_path).parent.mkdir(parents=True, exist_ok=True)
     Base.metadata.create_all(bind=engine)
+    _migrate_schema()
+
+
+def _migrate_schema() -> None:
+    """Add columns to existing SQLite DBs without Alembic."""
+    if not settings.database_url.startswith("sqlite"):
+        return
+    with engine.begin() as conn:
+        rows = conn.execute(text("PRAGMA table_info(process)")).fetchall()
+        names = {r[1] for r in rows}
+        if "diagram_json" not in names:
+            conn.execute(text("ALTER TABLE process ADD COLUMN diagram_json TEXT"))

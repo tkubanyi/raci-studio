@@ -12,7 +12,9 @@ Python **FastAPI** app with server-rendered UI (Jinja2), SQLite by default, depl
 - **3-D RACI** views: PDLC, SSC Operations & RM, Customer/JV
 - Rule-based **defect engine** (D-001 through D-012)
 - **Mermaid** process diagrams
-- **Document upload** (.txt, .md, .docx, .pdf, .xlsx) with text extraction; heuristic extraction by default, optional OpenAI when `OPENAI_API_KEY` is set
+- **Multi-format document ingestion**: Word, PDF, PowerPoint, Excel, **images** (PNG/JPG), **Visio (.vsdx)**
+- **AI process understanding** (optional `OPENAI_API_KEY`): narrative description, activities, RACI, swimlane diagram JSON; **vision** for photos and scanned PDFs (`OPENAI_VISION_MODEL`, default `gpt-4o`)
+- **Visio-style swimlane charts** on each process Diagram page (HTML lanes + Mermaid export view)
 - Seed data: **Order-to-Cash** reference process with intentional defects
 
 ## Run locally (Windows)

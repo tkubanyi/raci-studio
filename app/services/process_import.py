@@ -5,9 +5,10 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from app.models import DIMENSION_SLUGS, Activity, ActivityRole, Dimension, Document, Process, Role
+from app.services.diagram import diagram_from_process, diagram_json_dumps, merge_diagram_with_activities
 from app.services.extraction import ExtractionResult
 
 
@@ -83,19 +84,28 @@ def import_from_extraction(
         owner = _get_or_create_role(db, workspace_id, owner_name)
         role_cache[owner.name.lower()] = owner
 
-        desc_parts = [f"Imported from document: {source_filename or 'upload'}."]
+        narrative = (proc_data.get("process_description") or "").strip()
+        desc_parts = []
+        if narrative:
+            desc_parts.append(narrative)
+        desc_parts.append(f"Imported from: {source_filename or 'upload'} (mode: {result.mode}).")
         if document_id:
-            desc_parts.append(f"Source document ID: {document_id}.")
-        desc_parts.append(f"Extraction mode: {result.mode}.")
+            desc_parts.append(f"Document ID: {document_id}.")
+
+        diagram = merge_diagram_with_activities(
+            result.diagram if idx == 0 else proc_data.get("diagram"),
+            proc_data.get("activities") or [],
+        )
 
         process = Process(
             workspace_id=workspace_id,
             name=proc_name[:200],
             domain=domain,
-            description=" ".join(desc_parts),
+            description="\n\n".join(desc_parts),
             status="draft",
             version="0.1",
             owner_role_id=owner.id,
+            diagram_json=diagram_json_dumps(diagram) if diagram else None,
         )
         db.add(process)
         db.flush()
@@ -103,8 +113,6 @@ def import_from_extraction(
 
         activities_data = proc_data.get("activities") or []
         prev_act_id: int | None = None
-        act_objects: list[Activity] = []
-
         for act_idx, act_data in enumerate(activities_data):
             if not isinstance(act_data, dict):
                 continue
@@ -125,7 +133,6 @@ def import_from_extraction(
             )
             db.add(act)
             db.flush()
-            act_objects.append(act)
             prev_act_id = act.id
 
             actor_role = _get_or_create_role(db, workspace_id, actor)
@@ -143,6 +150,16 @@ def import_from_extraction(
                         )
                     )
 
+        acts = (
+            db.query(Activity)
+            .options(joinedload(Activity.assignments).joinedload(ActivityRole.role))
+            .filter(Activity.process_id == process.id)
+            .order_by(Activity.sequence)
+            .all()
+        )
+        if acts:
+            process.diagram_json = diagram_json_dumps(diagram_from_process(process, acts))
+
     db.commit()
     return created_ids
 
@@ -153,9 +170,11 @@ def extraction_summary_payload(
 ) -> dict:
     return {
         "mode": result.mode,
+        "source_type": result.source_type,
         "processes": result.processes,
         "roles": result.roles,
         "ambiguities": result.ambiguities,
+        "diagram": result.diagram,
         "created_process_ids": created_process_ids,
     }
 

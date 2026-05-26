@@ -68,6 +68,7 @@ class Process(Base):
     status: Mapped[str] = mapped_column(String(50), default="draft")
     version: Mapped[str] = mapped_column(String(20), default="1.0")
     owner_role_id: Mapped[int | None] = mapped_column(ForeignKey("role.id"), nullable=True)
+    diagram_json: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     workspace: Mapped[Workspace] = relationship(back_populates="processes")
     activities: Mapped[list[Activity]] = relationship(back_populates="process", cascade="all, delete-orphan")
