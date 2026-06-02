@@ -1,0 +1,867 @@
+{
+  "template_id": "proposal_global_payments_v3",
+  "target_file": "Proposal_Global_Payments_V3.pptx",
+  "target_path": "C:\\Users\\tkubanyi001\\OneDrive - PwC\\Cust Proposals\\Proposal_Global_Payments_V3.pptx",
+  "extraction": {
+    "structure_source": "Proposal_Global_Payments_V2.pptx",
+    "structure_source_path": "C:\\Users\\tkubanyi001\\Projects\\raci-studio\\data\\presentation-templates\\Proposal_Global_Payments_V2.pptx",
+    "note": "Proposal_Global_Payments_V3.pptx was locked by another process during extraction. Visual structure, shapes, colors, and layouts were mapped from Proposal_Global_Payments_V2.pptx (same deck family). Re-run extract_pptx_template.py against V3 when the file is closed to refresh."
+  },
+  "canvas": {
+    "width_in": 13.3333,
+    "height_in": 7.5,
+    "aspect_ratio": "16:9"
+  },
+  "theme": {
+    "colors": {
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#000000",
+      "lt2": "#EBEBEB",
+      "accent1": "#FD5108",
+      "accent2": "#FE7C39",
+      "accent3": "#FFAA72",
+      "accent4": "#A1A8B3",
+      "accent5": "#B5BCC4",
+      "accent6": "#CBD1D6",
+      "hlink": "#000000",
+      "folHlink": "#A1A8B3"
+    }
+  },
+  "design_tokens": {
+    "brand_palette": {
+      "primary_orange": "#FD5108",
+      "orange_mid": "#FE7C39",
+      "orange_light": "#FFAA72",
+      "neutral_dark": "#000000",
+      "neutral_white": "#FFFFFF",
+      "neutral_gray_light": "#EBEBEB",
+      "accent_gray_1": "#A1A8B3",
+      "accent_gray_2": "#B5BCC4",
+      "accent_gray_3": "#CBD1D6"
+    },
+    "surface_colors": {
+      "page_background": "#FFFFFF",
+      "panel_light": "#F5F7F8",
+      "panel_warm_1": "#FFF5ED",
+      "panel_warm_2": "#FFE8D4",
+      "panel_warm_3": "#FFE5D7",
+      "panel_warm_4": "#FFCDA8",
+      "divider": "#DFE3E6",
+      "body_text": "#434343"
+    },
+    "gradient_orange_scale": [
+      "#FD5108",
+      "#FE7C39",
+      "#FFAA72",
+      "#FFCDA8",
+      "#FFE8D4"
+    ],
+    "all_fill_colors": [
+      "#DFE3E6",
+      "#F5F7F8",
+      "#FD5108",
+      "#FE7C39",
+      "#FFAA72",
+      "#FFCDA8",
+      "#FFE5D7",
+      "#FFE8D4",
+      "#FFF5ED",
+      "theme:ACCENT_1 (5)",
+      "theme:ACCENT_2 (6)",
+      "theme:ACCENT_3 (7)",
+      "theme:ACCENT_4 (8)",
+      "theme:ACCENT_5 (9)",
+      "theme:ACCENT_6 (10)",
+      "theme:BACKGROUND_1 (14)",
+      "theme:NOT_THEME_COLOR (0)"
+    ],
+    "all_font_colors": [
+      "#000000",
+      "#434343"
+    ]
+  },
+  "typography": {
+    "families": [
+      "+mj-lt",
+      "+mn-lt",
+      "Arial",
+      "Georgia"
+    ],
+    "sizes_pt": [
+      9.0,
+      10.0,
+      10.5,
+      11.0,
+      12.0,
+      14.0,
+      15.0,
+      16.0,
+      18.0,
+      20.0,
+      28.0,
+      32.0,
+      54.0,
+      138.0
+    ]
+  },
+  "shape_patterns": {
+    "layouts_by_frequency": {
+      "Title Only": 19,
+      "Title Slide": 1,
+      "Section Header": 1,
+      "Content Photo 4": 1,
+      "Conclusion 1": 1,
+      "Four Stat Boxes": 1
+    },
+    "roles_by_frequency": {
+      "content_multi_block": 12,
+      "table": 8,
+      "closing": 2,
+      "title_cover": 1,
+      "content": 1
+    },
+    "common_layouts": {
+      "title_cover": "Title Slide",
+      "section_divider": "Section Header",
+      "standard_content": "Title Only",
+      "photo_content": "Content Photo 4",
+      "stats_row": "Four Stat Boxes",
+      "closing": "Conclusion 1"
+    }
+  },
+  "slide_count": 24,
+  "slide_catalog": [
+    {
+      "index": 1,
+      "layout_name": "Title Slide",
+      "role": "title_cover",
+      "title": "Global Payments \u000bShared Service Center Transformation",
+      "text_blocks": [
+        "Global Payments \u000bShared Service Center Transformation",
+        "PwC Slovakia",
+        "22. April 2026"
+      ],
+      "shape_count": 2,
+      "color_summary": {
+        "fill_colors": [],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 2,
+      "layout_name": "Title Only",
+      "role": "closing",
+      "title": "Dagmar Haklová",
+      "text_blocks": [
+        "Dagmar Haklová",
+        "Partner",
+        "PricewaterhouseCoopers Tax, k.s.",
+        "Bratislava",
+        "T: +421 259 350 111",
+        "www.pwc.com/sk"
+      ],
+      "shape_count": 11,
+      "color_summary": {
+        "fill_colors": [],
+        "line_colors": [],
+        "font_colors": [
+          "#434343"
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "layout_name": "Title Only",
+      "role": "table",
+      "title": "Vision — We Heard You\u000bPwC's Proposal Is Built on Your Own Blueprint",
+      "text_blocks": [
+        "Vision — We Heard You\u000bPwC's Proposal Is Built on Your Own Blueprint",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "3",
+        "This proposal directly responds to the SSC Concept by Global Payments. The client's vision, defines the SSC as a \"centralized organizational unit/own entity providing services across multiple entities\" that \"operates as an internal service provider with defined services and performance levels\" and \"evolves into a centre of excellence over time.\"",
+        "PwC's Role: We are here to operationalize this vision — to take the \"what\" and \"why\" and deliver the \"how\" through structured workstreams, proven methodologies, industry benchmarks, and hands-on implementation support."
+      ],
+      "shape_count": 6,
+      "color_summary": {
+        "fill_colors": [],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 4,
+      "layout_name": "Title Only",
+      "role": "content_multi_block",
+      "title": "The Combined Governance Model — How It All Fits Together\u000bAn Integrated Operating Model — \"ONE Organization Delivering Services Efficiently for MANY\"",
+      "text_blocks": [
+        "The Combined Governance Model — How It All Fits Together\u000bAn Integrated Operating Model — \"ONE Organization Delivering Services Efficiently for MANY\"",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "4",
+        "Governance Forum",
+        "(Quarterly; SSC Head + PDLC Leads + JV/Enterprise Leads)",
+        "Reviews: RACI | KPIs | Portfolio | Escalations | Benchmarks"
+      ],
+      "shape_count": 5,
+      "color_summary": {
+        "fill_colors": [
+          "#FD5108",
+          "#FFAA72",
+          "theme:ACCENT_2 (6)",
+          "theme:ACCENT_4 (8)",
+          "theme:NOT_THEME_COLOR (0)"
+        ],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 5,
+      "layout_name": "Title Only",
+      "role": "table",
+      "title": "From Today's Challenges to Tomorrow's Targets — Aligned View",
+      "text_blocks": [
+        "From Today's Challenges to Tomorrow's Targets — Aligned View",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "5"
+      ],
+      "shape_count": 4,
+      "color_summary": {
+        "fill_colors": [],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 6,
+      "layout_name": "Title Only",
+      "role": "content_multi_block",
+      "title": "Benefits Realization: JV Customers & Enterprise\u000bMaking the Benefits Tangible and Measurable",
+      "text_blocks": [
+        "Benefits Realization: JV Customers & Enterprise\u000bMaking the Benefits Tangible and Measurable",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "6",
+        "For the CUSTOMER (JVs)",
+        "Higher service quality & reliability (SLAs)",
+        "Faster time-to-market"
+      ],
+      "shape_count": 11,
+      "color_summary": {
+        "fill_colors": [
+          "#F5F7F8",
+          "theme:NOT_THEME_COLOR (0)"
+        ],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 7,
+      "layout_name": "Title Only",
+      "role": "content_multi_block",
+      "title": "PwC Capabilities Matching Your target operating model (TOM)\u000bYour Target Operating Model — Our Proven Capabilities",
+      "text_blocks": [
+        "PwC Capabilities Matching Your target operating model (TOM)\u000bYour Target Operating Model — Our Proven Capabilities",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "Customer-Provider Model — How Teams Interact:",
+        "Client’s description: Demand intake & prioritization; Capacity & resource allocation; Regular service reviews & feedback loops; Dedicated Relationship Management",
+        "Business Partnering Design — Deployed at 50+ GBS centers; PMO Design; ServiceNow/Salesforce implementation for intake and case management.",
+        "Service Delivery — How Services Are Delivered:"
+      ],
+      "shape_count": 19,
+      "color_summary": {
+        "fill_colors": [
+          "#FFE5D7",
+          "theme:NOT_THEME_COLOR (0)"
+        ],
+        "line_colors": [],
+        "font_colors": [
+          "#000000"
+        ]
+      }
+    },
+    {
+      "index": 8,
+      "layout_name": "Title Only",
+      "role": "table",
+      "title": "Industry Benchmarking & Standards Comparison\u000bHow Does the To-Be Model Compare to Industry Leaders?",
+      "text_blocks": [
+        "Industry Benchmarking & Standards Comparison\u000bHow Does the To-Be Model Compare to Industry Leaders?",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "8",
+        "Benchmarking across entities and market competition"
+      ],
+      "shape_count": 5,
+      "color_summary": {
+        "fill_colors": [],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 9,
+      "layout_name": "Title Only",
+      "role": "content_multi_block",
+      "title": "Tentative Timeline — The Road to \"SSCuccess\"",
+      "text_blocks": [
+        "Tentative Timeline — The Road to \"SSCuccess\"",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "9",
+        "Wk 22- 25",
+        "Wk 18-21",
+        "Wk 10-17"
+      ],
+      "shape_count": 13,
+      "color_summary": {
+        "fill_colors": [
+          "#FD5108",
+          "#FE7C39",
+          "#FFAA72",
+          "#FFCDA8",
+          "#FFE8D4",
+          "theme:NOT_THEME_COLOR (0)"
+        ],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 10,
+      "layout_name": "Title Only",
+      "role": "content_multi_block",
+      "title": "Why PwC team",
+      "text_blocks": [
+        "Engagement partner",
+        "Overall relationship; quality assurance; executive access",
+        "RACI & Governance Lead",
+        "Manager, Org Design",
+        "Experience in process mapping, optimization and improvement",
+        "Experienced in local and global accounting standards, SSC setup & evolution, as well as Tax, Risk & Regulation and compliance topics"
+      ],
+      "shape_count": 17,
+      "color_summary": {
+        "fill_colors": [
+          "#F5F7F8",
+          "theme:NOT_THEME_COLOR (0)"
+        ],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 11,
+      "layout_name": "Title Only",
+      "role": "content_multi_block",
+      "title": "References",
+      "text_blocks": [
+        "References",
+        "Selected accounting and tax compliance projects",
+        "Large online retail company – SSC O2C and P2P \u000bmodel setup",
+        "Setting up and continuously improving the AR, AP, CashApp, Billing and Treasury services",
+        "Cloud services provider – legal entity setup",
+        "Setting up billing and customer relationship service operation for EMEA region."
+      ],
+      "shape_count": 9,
+      "color_summary": {
+        "fill_colors": [
+          "#FFF5ED",
+          "theme:NOT_THEME_COLOR (0)"
+        ],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 12,
+      "layout_name": "Section Header",
+      "role": "content",
+      "title": "Pricing Structure",
+      "text_blocks": [
+        "Pricing Structure",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "12"
+      ],
+      "shape_count": 3,
+      "color_summary": {
+        "fill_colors": [],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 13,
+      "layout_name": "Title Only",
+      "role": "content_multi_block",
+      "title": "Pricing",
+      "text_blocks": [
+        "Pricing",
+        "Bringing clarity, accountability, and scale \u000binto one entity, we turn complexity into a competitive advantage for the whole group.\u000bGlobal Payments SSC Vision",
+        "PwC is ready to make this vision operational.",
+        "The timeline spans 25 weeks and assumes 110 days of engagement for, including Project Director, RACI & Governance lead 3 PwC staff members (manager level) and Change & comms lead (senior associate level).",
+        "The PwC fee is calculated at EUR 79,960",
+        "Proposal for Global Payments Prague Shared Service Center Transformation"
+      ],
+      "shape_count": 7,
+      "color_summary": {
+        "fill_colors": [],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 14,
+      "layout_name": "Content Photo 4",
+      "role": "content_multi_block",
+      "title": "Fees & cost structure",
+      "text_blocks": [
+        "Fees & cost structure",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "14",
+        "The pricing calculation assumes timely cooperation with Global Payments leadership and staff allowing to meet the timelines for “as-is” mapping, as well as “to-be” state review and approvals",
+        "Access to Global Payments systems is considered highly restricted thus data and information needs to be sourced by PwC staff through Global Payments employees",
+        "All fees are in EUR, excluding VAT."
+      ],
+      "shape_count": 9,
+      "color_summary": {
+        "fill_colors": [],
+        "line_colors": [],
+        "font_colors": [
+          "#000000"
+        ]
+      }
+    },
+    {
+      "index": 15,
+      "layout_name": "Conclusion 1",
+      "role": "closing",
+      "title": "Thank you",
+      "text_blocks": [
+        "Thank you",
+        "© 2026 PricewaterhouseCoopers. All rights reserved. In this document, “PwC” refers to the PwC network and/or one or more of its member firms, each of which is a separate legal entity. ​",
+        "​",
+        "This document is not a contract and please consider its content as strictly confidential. Further, please note that the provision of our services is subject to the Company's verification from the risk management and auditor independence perspective, as well as to the signing of an engagement letter for the provision of services. Thus, before we finalise all risk management steps, please consider this to be a non-binding proposal."
+      ],
+      "shape_count": 2,
+      "color_summary": {
+        "fill_colors": [],
+        "line_colors": [],
+        "font_colors": [
+          "#000000"
+        ]
+      }
+    },
+    {
+      "index": 16,
+      "layout_name": "Title Only",
+      "role": "table",
+      "title": "Our Approach: Six Integrated Workstreams",
+      "text_blocks": [
+        "Our Approach: Six Integrated Workstreams",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "16",
+        "RACI Matrix & Governance Model",
+        "(TOM Pillar 1 & Gov)",
+        "WS6"
+      ],
+      "shape_count": 9,
+      "color_summary": {
+        "fill_colors": [
+          "#FFE8D4",
+          "#FFF5ED",
+          "theme:ACCENT_2 (6)",
+          "theme:ACCENT_6 (10)",
+          "theme:NOT_THEME_COLOR (0)"
+        ],
+        "line_colors": [
+          "#FFF5ED"
+        ],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 17,
+      "layout_name": "Title Only",
+      "role": "table",
+      "title": "Workstream 1: RACI Matrix & Governance Model (1/2)\u000bThe Backbone — \"Who Decides & Who Is Accountable\"",
+      "text_blocks": [
+        "Workstream 1: RACI Matrix & Governance Model (1/2)\u000bThe Backbone — \"Who Decides & Who Is Accountable\"",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "17",
+        "\"Who owns decisions (decision rights — strategic, tactical, operational)“",
+        "Decision Rights Matrix — maps strategic decisions (e.g., new product launch) to Enterprise leadership; tactical decisions (e.g., SLA target-setting) to SSC Head + Business Partners; operational decisions (e.g., daily \u000bcase routing) to team leads per RACI",
+        "\"How priorities are set (portfolio steering)“"
+      ],
+      "shape_count": 19,
+      "color_summary": {
+        "fill_colors": [
+          "#FFF5ED",
+          "theme:NOT_THEME_COLOR (0)"
+        ],
+        "line_colors": [
+          "#FE7C39"
+        ],
+        "font_colors": [
+          "#000000"
+        ]
+      }
+    },
+    {
+      "index": 18,
+      "layout_name": "Title Only",
+      "role": "table",
+      "title": "Workstream 1: RACI Matrix & Governance Model (2/2)\u000bMaking RACI Operational — Not Shelfware",
+      "text_blocks": [
+        "Workstream 1: RACI Matrix & Governance Model (2/2)\u000bMaking RACI Operational — Not Shelfware",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "18",
+        "Dual-Axis RACI — For each process/service, \u000bthe RACI explicitly shows both the functional accountability (Prague SSC) and business line accountability (country/product group)",
+        "Conflict Resolution Protocol — Where RACI reveals two groups claiming \"A\", PwC facilitates resolution workshops with a structured decision framework",
+        "Business Partner as Alignment Broker (WS2) — BPs serve as the ongoing mechanism to keep direct and dotted-line stakeholders aligned"
+      ],
+      "shape_count": 14,
+      "color_summary": {
+        "fill_colors": [
+          "#F5F7F8",
+          "theme:NOT_THEME_COLOR (0)"
+        ],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 19,
+      "layout_name": "Title Only",
+      "role": "content_multi_block",
+      "title": "Workstream 2: Business Partnering & PMO Function Design (1/2)\u000bThe Connective Tissue — Dedicated Relationship Management & Portfolio Steering",
+      "text_blocks": [
+        "Workstream 2: Business Partnering & PMO Function Design (1/2)\u000bThe Connective Tissue — Dedicated Relationship Management & Portfolio Steering",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "19",
+        "Role Definition",
+        "Business Partners are translators, aligners, and relationship managers — NOT doers. They represent the Prague SSC to JV/Enterprise customers and represent customer needs back to the SSC",
+        "Scope"
+      ],
+      "shape_count": 31,
+      "color_summary": {
+        "fill_colors": [
+          "#DFE3E6",
+          "theme:BACKGROUND_1 (14)",
+          "theme:NOT_THEME_COLOR (0)"
+        ],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 20,
+      "layout_name": "Title Only",
+      "role": "content_multi_block",
+      "title": "Workstream 2: Business Partnering & PMO Function Design (1/2)\u000bThe Connective Tissue — Dedicated Relationship Management & Portfolio Steering",
+      "text_blocks": [
+        "Workstream 2: Business Partnering & PMO Function Design (1/2)\u000bThe Connective Tissue — Dedicated Relationship Management & Portfolio Steering",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "20",
+        "Intake Gate",
+        "Every new initiative (project, product, acquisition workaround, customer request) must pass through a PMO intake gate — RACI impact assessed, resources allocated, SLA defined",
+        "Prioritization Framework"
+      ],
+      "shape_count": 31,
+      "color_summary": {
+        "fill_colors": [
+          "#DFE3E6",
+          "theme:BACKGROUND_1 (14)",
+          "theme:NOT_THEME_COLOR (0)"
+        ],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 21,
+      "layout_name": "Title Only",
+      "role": "table",
+      "title": "Workstream 3: Intake Mechanism & Case Management\u000bFrom \"Unstructured INTAKE\" to a Single Front Door",
+      "text_blocks": [
+        "Workstream 3: Intake Mechanism & Case Management\u000bFrom \"Unstructured INTAKE\" to a Single Front Door",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "21",
+        "Single intake portal",
+        "Triage & classification engine",
+        "Assignment and SLA clock start"
+      ],
+      "shape_count": 11,
+      "color_summary": {
+        "fill_colors": [
+          "#FFF5ED",
+          "theme:ACCENT_6 (10)",
+          "theme:NOT_THEME_COLOR (0)"
+        ],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 22,
+      "layout_name": "Four Stat Boxes",
+      "role": "content_multi_block",
+      "title": "Workstream 4: Post-Acquisition Transition Framework\u000bStructured Workarounds — Design for Growth, Quality \u000band Speed",
+      "text_blocks": [
+        "A. Acquisition \u000bClose",
+        "PMO registers \"Acquisition Integration Project\"; initial RACI impact assessment",
+        "B. Structured Workaround",
+        "Business Partner monitors; weekly status to PMO; workaround logged in intake system",
+        "C. Tech-Enabled Transition",
+        "PMO tracks milestones; PDLC (Products & Tech) owns delivery; RACI updated for new system role"
+      ],
+      "shape_count": 20,
+      "color_summary": {
+        "fill_colors": [],
+        "line_colors": [],
+        "font_colors": [
+          "#000000"
+        ]
+      }
+    },
+    {
+      "index": 23,
+      "layout_name": "Title Only",
+      "role": "content_multi_block",
+      "title": "Workstream 5: Subcontractor Governance Model\u000bExtending the GP Model — Consistent Quality Across the Ecosystem",
+      "text_blocks": [
+        "Workstream 5: Subcontractor Governance Model\u000bExtending the GP Model — Consistent Quality Across the Ecosystem",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "23",
+        "1. Onboarding",
+        "Subcontractor Qualification Standard",
+        "Minimum requirements: compliance certifications, process maturity, tech compatibility, PCI-DSS."
+      ],
+      "shape_count": 5,
+      "color_summary": {
+        "fill_colors": [
+          "#FE7C39",
+          "#FFAA72",
+          "#FFCDA8",
+          "#FFE8D4",
+          "#FFF5ED",
+          "theme:ACCENT_1 (5)",
+          "theme:ACCENT_5 (9)",
+          "theme:NOT_THEME_COLOR (0)"
+        ],
+        "line_colors": [],
+        "font_colors": []
+      }
+    },
+    {
+      "index": 24,
+      "layout_name": "Title Only",
+      "role": "table",
+      "title": "Workstream 6: Transfer Pricing Mechanism & Reporting\u000bCommercial Transparency — \"Clear Cost Allocation and Visibility\"",
+      "text_blocks": [
+        "Workstream 6: Transfer Pricing Mechanism & Reporting\u000bCommercial Transparency — \"Clear Cost Allocation and Visibility\"",
+        "Proposal for Global Payments Prague Shared Service Center Transformation",
+        "24",
+        "Component",
+        "€0.XX per payment processed",
+        "Per-transaction fee (volume-based)"
+      ],
+      "shape_count": 24,
+      "color_summary": {
+        "fill_colors": [
+          "#FFCDA8",
+          "#FFF5ED",
+          "theme:ACCENT_2 (6)",
+          "theme:ACCENT_3 (7)",
+          "theme:NOT_THEME_COLOR (0)"
+        ],
+        "line_colors": [],
+        "font_colors": []
+      }
+    }
+  ],
+  "layouts_used": [
+    {
+      "name": "Title Slide",
+      "placeholders": [
+        {
+          "idx": 0,
+          "type": "CENTER_TITLE (3)",
+          "name": "Title 1"
+        },
+        {
+          "idx": 1,
+          "type": "SUBTITLE (4)",
+          "name": "Subtitle 2"
+        }
+      ]
+    },
+    {
+      "name": "Title Only",
+      "placeholders": [
+        {
+          "idx": 0,
+          "type": "TITLE (1)",
+          "name": "Title Placeholder 1"
+        },
+        {
+          "idx": 3,
+          "type": "FOOTER (15)",
+          "name": "Footer Placeholder 4"
+        },
+        {
+          "idx": 4,
+          "type": "SLIDE_NUMBER (13)",
+          "name": "Slide Number Placeholder 13"
+        }
+      ]
+    },
+    {
+      "name": "Section Header",
+      "placeholders": [
+        {
+          "idx": 0,
+          "type": "TITLE (1)",
+          "name": "Title 1"
+        },
+        {
+          "idx": 1,
+          "type": "BODY (2)",
+          "name": "Text Placeholder 2"
+        },
+        {
+          "idx": 3,
+          "type": "FOOTER (15)",
+          "name": "Footer Placeholder 4"
+        },
+        {
+          "idx": 4,
+          "type": "SLIDE_NUMBER (13)",
+          "name": "Slide Number Placeholder 13"
+        }
+      ]
+    },
+    {
+      "name": "Content Photo 4",
+      "placeholders": [
+        {
+          "idx": 11,
+          "type": "PICTURE (18)",
+          "name": "Picture Placeholder 14"
+        },
+        {
+          "idx": 0,
+          "type": "TITLE (1)",
+          "name": "Title 1"
+        },
+        {
+          "idx": 1,
+          "type": "OBJECT (7)",
+          "name": "Content Placeholder 2"
+        },
+        {
+          "idx": 3,
+          "type": "FOOTER (15)",
+          "name": "Footer Placeholder 4"
+        },
+        {
+          "idx": 4,
+          "type": "SLIDE_NUMBER (13)",
+          "name": "Slide Number Placeholder 13"
+        }
+      ]
+    },
+    {
+      "name": "Conclusion 1",
+      "placeholders": [
+        {
+          "idx": 0,
+          "type": "CENTER_TITLE (3)",
+          "name": "Title 1"
+        },
+        {
+          "idx": 1,
+          "type": "SUBTITLE (4)",
+          "name": "Subtitle 2"
+        }
+      ]
+    },
+    {
+      "name": "Four Stat Boxes",
+      "placeholders": [
+        {
+          "idx": 0,
+          "type": "TITLE (1)",
+          "name": "Title Placeholder 1"
+        },
+        {
+          "idx": 11,
+          "type": "BODY (2)",
+          "name": "Text Placeholder 6"
+        },
+        {
+          "idx": 12,
+          "type": "BODY (2)",
+          "name": "Text Placeholder 9"
+        },
+        {
+          "idx": 13,
+          "type": "BODY (2)",
+          "name": "Text Placeholder 6"
+        },
+        {
+          "idx": 14,
+          "type": "BODY (2)",
+          "name": "Text Placeholder 9"
+        },
+        {
+          "idx": 15,
+          "type": "BODY (2)",
+          "name": "Text Placeholder 6"
+        },
+        {
+          "idx": 16,
+          "type": "BODY (2)",
+          "name": "Text Placeholder 9"
+        },
+        {
+          "idx": 17,
+          "type": "BODY (2)",
+          "name": "Text Placeholder 6"
+        },
+        {
+          "idx": 18,
+          "type": "BODY (2)",
+          "name": "Text Placeholder 9"
+        },
+        {
+          "idx": 3,
+          "type": "FOOTER (15)",
+          "name": "Footer Placeholder 4"
+        },
+        {
+          "idx": 4,
+          "type": "SLIDE_NUMBER (13)",
+          "name": "Slide Number Placeholder 13"
+        }
+      ]
+    }
+  ],
+  "replication_notes": {
+    "instructions": [
+      "Use canvas dimensions and theme colors as fixed design tokens.",
+      "Match each new slide to the closest role (title_cover, agenda, content, table, closing).",
+      "Preserve shape positions, auto_shape_type, fill, and line styling from the mapped slide.",
+      "Replace text content in paragraphs/runs while keeping font sizes and colors.",
+      "Grouped shapes should be recreated as groups with the same child structure."
+    ],
+    "roles": {
+      "title_cover": "Opening slide with title and subtitle branding",
+      "agenda": "Table of contents / section overview",
+      "content": "Standard narrative slide with text blocks",
+      "content_multi_block": "Slide with multiple content zones or icons",
+      "table": "Tabular data layout",
+      "closing": "Thank you / Q&A / contact slide"
+    }
+  },
+  "full_map_path": "proposal_global_payments_v3.template.json"
+}

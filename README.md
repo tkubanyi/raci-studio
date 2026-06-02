@@ -17,6 +17,16 @@ Python **FastAPI** app with server-rendered UI (Jinja2), SQLite by default, depl
 - **Visio-style swimlane charts** on each process Diagram page (HTML lanes + Mermaid export view)
 - Seed data: **Order-to-Cash** reference process with intentional defects
 
+## Presentation Studio (local PPTX builder)
+
+Generate brand-formatted PowerPoint decks from Word, PDF, or plain text, with optional AI edits. **Local only** — see [docs/PRESENTATION_STUDIO.md](docs/PRESENTATION_STUDIO.md).
+
+```powershell
+.\scripts\run_presentation_studio.ps1
+```
+
+Then open http://127.0.0.1:8501
+
 ## Run locally (Windows)
 
 ```powershell

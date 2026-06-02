@@ -1,0 +1,78 @@
+{
+  "output": "C:\\Users\\tkubanyi001\\Projects\\raci-studio\\data\\presentation-templates\\Project_Vienna_Discovery_Phase.pptx",
+  "source_docx": "C:\\Users\\tkubanyi001\\OneDrive - PwC\\Documents\\Customers\\Global Payments\\Project Vienna_discovery phase.docx",
+  "template_id": "proposal_global_payments_v3",
+  "slide_count": 14,
+  "slides": [
+    {
+      "number": 1,
+      "template_slide": 1,
+      "title": "Project Vienna\nDiagnostic and Discovery Phase"
+    },
+    {
+      "number": 2,
+      "template_slide": 3,
+      "title": "What? — Problem Statement\nEstablishing a Fact-Based Operating Model View"
+    },
+    {
+      "number": 3,
+      "template_slide": 5,
+      "title": "So What? — Opportunities During Discovery\nKey Focus Areas"
+    },
+    {
+      "number": 4,
+      "template_slide": 12,
+      "title": "Now What?"
+    },
+    {
+      "number": 5,
+      "template_slide": 16,
+      "title": "Discovery Approach\nFive Integrated Workstreams"
+    },
+    {
+      "number": 6,
+      "template_slide": 9,
+      "title": "Tentative Timeline\n8–16 Week Diagnostic Program"
+    },
+    {
+      "number": 7,
+      "template_slide": 10,
+      "title": "Required Project Team"
+    },
+    {
+      "number": 8,
+      "template_slide": 6,
+      "title": "Expected Outputs\nEnd-of-Discovery Deliverables"
+    },
+    {
+      "number": 9,
+      "template_slide": 7,
+      "title": "Industry Standards & Methodologies\nStructured Discovery Techniques"
+    },
+    {
+      "number": 10,
+      "template_slide": 8,
+      "title": "GBS Maturity & Benchmarking\nComparison to Leading Practice"
+    },
+    {
+      "number": 11,
+      "template_slide": 17,
+      "title": "RACI & Operating Model Design\nRoles Across JVs, SSC and HQ"
+    },
+    {
+      "number": 12,
+      "template_slide": 18,
+      "title": "SIPOC & Process Mapping\nFrom Documentation to Simplification"
+    },
+    {
+      "number": 13,
+      "template_slide": 22,
+      "title": "Service Placement Options\nFour Future-State Paths"
+    },
+    {
+      "number": 14,
+      "template_slide": 15,
+      "title": "Thank you"
+    }
+  ]
+}

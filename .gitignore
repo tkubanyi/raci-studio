@@ -9,6 +9,8 @@ build/
 venv/
 *.db
 uploads/
+presentation_studio_outputs/
+.streamlit/secrets.toml
 .pytest_cache/
 .coverage
 htmlcov/
